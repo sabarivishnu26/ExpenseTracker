@@ -10,9 +10,16 @@ class Transaction(models.Model):
     type = models.CharField(max_length=10, choices=[('income', 'Income'), ('expense', 'Expense')])
     description = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.type.capitalize()} - {self.amount}"
+
+
 class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bank_name = models.CharField(max_length=100)
     account_number = models.CharField(max_length=50)
     card_type = models.CharField(max_length=50, choices=[('debit', 'Debit'), ('credit', 'Credit'), ('upi', 'UPI')])
     balance = models.DecimalField(max_digits=12, decimal_places=2)
+    
+    def __str__(self):
+        return f"{self.bank_name} - {self.card_type}"
