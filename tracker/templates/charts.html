@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Income & Expense Charts</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card p-3 shadow-sm">
+        <h5 class="text-center">Income Distribution</h5>
+        <canvas id="incomeChart"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-3 shadow-sm">
+        <h5 class="text-center">Expense Distribution</h5>
+        <canvas id="expenseChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Chart Rendering Script -->
+<script>
+  const incomeLabels = {{ income_labels|safe }};
+  const incomeData = {{ income_data|safe }};
+  const expenseLabels = {{ expense_labels|safe }};
+  const expenseData = {{ expense_data|safe }};
+
+  const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+  new Chart(incomeCtx, {
+    type: 'pie',
+    data: {
+      labels: incomeLabels,
+      datasets: [{
+        label: 'Income',
+        data: incomeData,
+        backgroundColor: ['#4caf50', '#81c784', '#a5d6a7', '#c8e6c9'],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+
+  const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+  new Chart(expenseCtx, {
+    type: 'pie',
+    data: {
+      labels: expenseLabels,
+      datasets: [{
+        label: 'Expense',
+        data: expenseData,
+        backgroundColor: ['#f44336', '#e57373', '#ef9a9a', '#ffcdd2'],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+</script>
+{% endblock %}
